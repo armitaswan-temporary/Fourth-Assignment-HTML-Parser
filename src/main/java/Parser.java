@@ -11,35 +11,47 @@ public class Parser {
 
     public List<Country> sortByName(){
         List<Country> sortedByName = new ArrayList<>(countries);
-        // Sort countries alphabetically (least)
-        //TODO
+        Collections.sort(sortedByName, new CountryComparator(1));
         return  sortedByName;
     }
 
     public List<Country> sortByPopulation(){
         List<Country> sortedByPopulation = new ArrayList<>(countries);
-        // Sort countries by population (most)
-        //TODO
+        Collections.sort(sortedByPopulation, new CountryComparator(2));
         return sortedByPopulation;
     }
 
     public List<Country> sortByArea(){
         List<Country> sortedByArea = new ArrayList<>(countries);
-        // Sort countries by area (most)
-        //TODO
+        Collections.sort(sortedByArea, new CountryComparator(3));
         return sortedByArea;
     }
 
-    public void setUp() throws IOException {
+    public void setUp() {
+
+        //loading the HTML file
+        File htmlFile = new File("src\\Resources\\country-list.html");
 
         //Parse the HTML file using Jsoup
-        //TODO
+        Document document = null;
+        try {
+            document = Jsoup.parse(htmlFile, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Extract data from the HTML
-        //TODO
+        Elements divs = document.selectFirst("section#countries").select("div.col-md-4.country");
 
         // Iterate through each country div to extract country data
-        //TODO
+        for (Element div : divs) {
+            String name = div.select(".country-name").text();
+            String capital = div.select(".country-capital").text();
+            int population = Integer.parseInt(div.select(".country-population").text());
+            double area = Double.parseDouble(div.select(".country-area").text());
+            Country country = new Country(name, capital, population, area);
+            countries.add(country);
+        }
     }
 
     public static void main(String[] args) {
