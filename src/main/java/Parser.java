@@ -27,7 +27,16 @@ public class Parser {
         return sortedByArea;
     }
 
-    public void setUp() {
+    public static String searchC(String name) {
+        for (int i = 0; i < countries.size(); i++) {
+            if (countries.get(i).getName().equals(name)) {
+                return countries.get(i).toString();
+            }
+        }
+        return "Country not found";
+    }
+
+    public static void setUp() {
 
         //loading the HTML file
         File htmlFile = new File("src\\Resources\\country-list.html");
@@ -56,5 +65,45 @@ public class Parser {
 
     public static void main(String[] args) {
         //you can test your code here before you run the unit tests ;)
+        setUp();
+        Scanner scanner = new Scanner (System.in);
+        while (true) {
+            System.out.println ("\n\n\n\n\n\n\n\n\n\n");
+            System.out.println ("1- view all countries   2- search");
+            System.out.print ("choose: ");
+            int choice = scanner.nextInt();
+            boolean flag1 = true;
+            while (flag1) {
+                if (choice == 1) {
+                    boolean show = true;
+                    int i = 0;
+                    while (show && i < countries.size() - 10) {
+                        for (int j = i; j < i + 10; j++) {
+                            countries.get(j).toString();
+                        }
+                        i += 10;
+                        if (i < countries.size()) {
+                            System.out.println ("1- show more   2- exit");
+                            int choice2 = scanner.nextInt();
+                            if (choice2 == 1) {
+                                continue;
+                            }
+                            else {
+                                show = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (choice == 2) {
+                    System.out.println ("what country are you looking for?");
+                    String choice2 = scanner.nextLine();
+                    System.out.println (searchC(choice2));
+                }
+                else {
+                    break;
+                }
+            }
+        }
     }
 }
